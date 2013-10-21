@@ -10,6 +10,11 @@ before(function (){
 
 });
 
+describe('MonitorPid dependencies', function () {
+  it('should have pidstat installed on the system');
+  it('should have pidtree installed on the system');
+});
+
 describe('MonitorPid nodejs module', function () {
   this.timeout(5000);
 
