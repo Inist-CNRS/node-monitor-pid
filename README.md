@@ -3,6 +3,8 @@ node-monitor-pid
 
 Monitors a pid and all its sons
 
+[![Build Status](https://travis-ci.org/kerphi/node-monitor-pid.png?branch=master)](https://travis-ci.org/kerphi/node-monitor-pid)
+
 Installation
 ================
 
