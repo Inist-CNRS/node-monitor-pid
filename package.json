@@ -1,6 +1,6 @@
 {
   "name": "monitor-pid",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Monitors a pid and all its sons",
   "main": "index.js",
   "scripts": {
