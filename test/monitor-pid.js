@@ -72,7 +72,19 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
-  it('should return 2 results if period is 1 sec and the watched process die after 2.5 secondes @5');
+  it('should return 5 results if period is 50ms and the watched process die after 210ms @5', function (done) {
+    var stats   = [];
+    var process = spawn('sleep', ['0.21']);
+    var mp = new MonitorPid(process.pid, { period: 50 }); // monitor each 10ms
+    mp.on('monitored', function (pid, data) {
+      stats.push(data);
+    });
+    mp.on('end', function (pid) {
+      expect(stats).to.have.length(5);
+      done();
+    });
+    mp.start();
+  });
 
   it('should return a result with attended fields @6');
 
