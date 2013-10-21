@@ -10,6 +10,7 @@ before(function (){
 });
 
 describe('MonitorPid nodejs module', function () {
+  this.timeout(5000);
 
   it('should return an error if started with an unknown pid @1', function (done) {
     getNonRunningPid(function (err, pidToTest) {
@@ -23,31 +24,31 @@ describe('MonitorPid nodejs module', function () {
   });
   
   it('should stop monitoring when the watched process is finished @2', function (done) {
-    var process = spawn('sleep', ['0.1']);
-    var processCode = undefined;
-    process.on('exit', function (code) {
-      processCode = code;
+    var p = spawn('sleep', ['0.1']);
+    var pCode = undefined;
+    p.on('exit', function (code) {
+      pCode = code;
     })
-    var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
+    var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
     mp.on('end', function (pid) {
-      expect(processCode).to.not.be.undefined;;
-      expect(processCode).to.be.equal(0);
-      expect(pid).to.be.equal(process.pid);
+      expect(pCode).to.not.be.undefined;;
+      expect(pCode).to.be.equal(0);
+      expect(pid).to.be.equal(p.pid);
       done();
     });
     mp.start();
   });
 
   it('should stop monitoring when the "stop" method is called @3', function (done) {
-    var process = spawn('sleep', ['1']);
-    var processCode = undefined;
-    process.on('exit', function (code) {
-      processCode = code;
+    var p = spawn('sleep', ['2']);
+    var pCode = undefined;
+    p.on('exit', function (code) {
+      pCode = code;
     })
-    var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
+    var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
     mp.on('end', function (pid) {
-      expect(processCode, 'process should not have yet exited').to.be.undefined;;
-      expect(pid).to.be.equal(process.pid);
+      expect(pCode, 'process should not have yet exited').to.be.undefined;;
+      expect(pid).to.be.equal(p.pid);
       done();
     });
     mp.start();
@@ -59,8 +60,8 @@ describe('MonitorPid nodejs module', function () {
 
   it('should return a JSON result @4', function (done) {
     var stats   = [];
-    var process = spawn('sleep', ['0.1']);
-    var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
+    var p = spawn('sleep', ['0.1']);
+    var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
     mp.on('monitored', function (pid, data) {
       stats.push(data);
     });
@@ -72,21 +73,41 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
-  it('should return 5 results if period is 50ms and the watched process die after 210ms @5', function (done) {
+  it('should return 2 results if period is 1.5s and the watched process die after 3.5s @5', function (done) {
     var stats   = [];
-    var process = spawn('sleep', ['0.21']);
-    var mp = new MonitorPid(process.pid, { period: 50 }); // monitor each 10ms
+    var p = spawn('sleep', ['3.5']);
+    var mp = new MonitorPid(p.pid, { period: 1500 });
     mp.on('monitored', function (pid, data) {
       stats.push(data);
     });
     mp.on('end', function (pid) {
-      expect(stats).to.have.length(5);
+      expect(stats).to.have.length(3);
       done();
     });
     mp.start();
   });
 
-  it('should return a result with attended fields @6');
+  it('should return a result with attended fields @6', function (done) {
+    var stats   = [];
+    var p = spawn('sleep', ['0.2']);
+    var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
+    mp.on('monitored', function (pid, data) {
+      stats.push(data);
+    });
+    mp.on('end', function (pid) {
+      expect(stats).to.have.length(1);
+      expect(stats[0].parent_pid).to.not.be.undefined;
+      expect(stats[0].active_pids).to.not.be.undefined;
+      expect(stats[0].nb_pids).to.not.be.undefined;
+      expect(stats[0].cpu).to.not.be.undefined;
+      expect(stats[0].mem_vsz).to.not.be.undefined;
+      expect(stats[0].mem_rss).to.not.be.undefined;
+      expect(stats[0].disk_read).to.not.be.undefined;
+      expect(stats[0].disk_write).to.not.be.undefined;
+      done();
+    });
+    mp.start();
+  });
 
 });
 
