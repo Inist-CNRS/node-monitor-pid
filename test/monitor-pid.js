@@ -3,6 +3,7 @@
 
 var expect      = require('chai').expect;
 var MonitorPid  = require('../index.js');
+var spawn       = require('child_process').spawn;
 
 before(function (){
 
@@ -20,7 +21,23 @@ describe('MonitorPid nodejs module', function () {
       mp.start();
     });
   });
-  it('should stop monitoring when the watched process is finished @2');
+  
+  it('should stop monitoring when the watched process is finished @2', function (done) {
+    var process = spawn('sleep', ['0.1']);
+    var processCode = undefined;
+    process.on('close', function (code) {
+      processCode = code;
+    })
+    var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
+    mp.on('end', function (pid) {
+      expect(processCode).to.not.be.undefined;;
+      expect(processCode).to.be.equal(0);
+      expect(pid).to.be.equal(process.pid);
+      done();
+    });
+    mp.start();
+  });
+
   it('should stop monitoring when the "stop" method is called @3');
   it('should return JSON result @4');
   it('should return 2 results if period is 1 sec and the watched process die after 2.5 secondes @5');
