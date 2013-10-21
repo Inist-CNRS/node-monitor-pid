@@ -13,7 +13,7 @@ npm install monitor-pid
 Usage as a command line
 =======================
 
-```
+```sh
 npm install -f monitor-pid
 monitor-pid --pid 5253 --period 5000
 ```
@@ -23,7 +23,7 @@ It will monitor the pid 5253 each 5 secondes and output the statistics on stdout
 Usage as a nodejs module
 ========================
 
-```
+```js
 var MonitorPid = require('monitor-pid');
 
 // creates an instance of MonitorPid
