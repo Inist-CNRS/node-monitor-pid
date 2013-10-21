@@ -13,7 +13,7 @@ before(function (){
 describe('MonitorPid nodejs module', function () {
   this.timeout(5000);
 
-  it('should return an error if started with an unknown pid @1', function (done) {
+  it('should return an error if started with an unknown pid @1.1', function (done) {
     getNonRunningPid(function (err, pidToTest) {
       var mp = new MonitorPid(pidToTest);
       mp.on('error', function (err) {
@@ -24,7 +24,7 @@ describe('MonitorPid nodejs module', function () {
     });
   });
   
-  it('should stop monitoring when the watched process is finished @2', function (done) {
+  it('should stop monitoring when the watched process is finished @1.2', function (done) {
     var p = spawn('sleep', ['0.1']);
     var pCode = undefined;
     p.on('exit', function (code) {
@@ -40,7 +40,7 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
-  it('should stop monitoring when the "stop" method is called @3', function (done) {
+  it('should stop monitoring when the "stop" method is called @1.3', function (done) {
     var p = spawn('sleep', ['2']);
     var pCode = undefined;
     p.on('exit', function (code) {
@@ -59,7 +59,7 @@ describe('MonitorPid nodejs module', function () {
     }, 100);
   });
 
-  it('should return a JSON result @4', function (done) {
+  it('should return a JSON result @1.4', function (done) {
     var stats   = [];
     var p = spawn('sleep', ['0.1']);
     var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
@@ -74,7 +74,7 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
-  it('should return 2 results if period is 1.5s and the watched process die after 3.5s @5', function (done) {
+  it('should return 2 results if period is 1.5s and the watched process die after 3.5s @1.5', function (done) {
     var stats   = [];
     var p = spawn('sleep', ['3.5']);
     var mp = new MonitorPid(p.pid, { period: 1500 });
@@ -88,7 +88,7 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
-  it('should return a result with attended fields @6', function (done) {
+  it('should return a result with attended fields @1.6', function (done) {
     var stats   = [];
     var p = spawn('sleep', ['0.2']);
     var mp = new MonitorPid(p.pid, { period: 10 }); // monitor each 10ms
@@ -114,7 +114,7 @@ describe('MonitorPid nodejs module', function () {
 
 describe('MonitorPid unix command', function () {
 
-  it('should not be allowed to be run without parameters @7', function (done) {
+  it('should not be allowed to be run without parameters @2.1', function (done) {
     var cmd = __dirname + '/../bin/monitor-pid';
     var p = exec(cmd, function (err, stdout, stderr) {
       expect(p.exitCode).to.be.equal(1);
@@ -123,7 +123,7 @@ describe('MonitorPid unix command', function () {
     });
   });
 
-  it('should return 1 if pid doesn\'t exist @8', function (done) {
+  it('should return 1 if pid doesn\'t exist @2.2', function (done) {
     getNonRunningPid(function (err, pidToTest) {
       var cmd = __dirname + '/../bin/monitor-pid --pid=' + pidToTest;
       var p = exec(cmd, function (err, stdout, stderr) {
@@ -133,7 +133,7 @@ describe('MonitorPid unix command', function () {
     });
   });
 
-  it('should return CSV as a result if pid exists @9');
+  it('should return CSV as a result if pid exists @2.3');
 
 });
 
