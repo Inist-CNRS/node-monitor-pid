@@ -57,7 +57,7 @@ describe('MonitorPid nodejs module', function () {
     }, 100);
   });
 
-  it('should return JSON result @4', function (done) {
+  it('should return a JSON result @4', function (done) {
     var stats   = [];
     var process = spawn('sleep', ['0.1']);
     var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
@@ -73,6 +73,8 @@ describe('MonitorPid nodejs module', function () {
   });
 
   it('should return 2 results if period is 1 sec and the watched process die after 2.5 secondes @5');
+
+  it('should return a result with attended fields @6');
 
 });
 
