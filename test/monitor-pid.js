@@ -10,11 +10,6 @@ before(function (){
 
 });
 
-describe('MonitorPid dependencies', function () {
-  it('should have pidstat installed on the system');
-  it('should have pidtree installed on the system');
-});
-
 describe('MonitorPid nodejs module', function () {
   this.timeout(5000);
 
@@ -131,6 +126,16 @@ describe('MonitorPid unix command', function () {
   it('should return 1 if pid doesn\'t exist @8');
   it('should return CSV as a result if pid exists @9');
 
+});
+
+describe('MonitorPid dependencies', function () {
+  it('should have pidstat installed on the system @3.1', function (done) {
+    var p = exec('pidstat -V', function (err, stdout, stderr) {
+      expect(p.exitCode).to.be.equal(0);
+      done();
+    });   
+  });
+  it('should have pidtree installed on the system @3.2');
 });
 
 after(function (){
