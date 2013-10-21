@@ -15,7 +15,7 @@ Usage as a command line
 
 ```
 npm install -f monitor-pid
-monitor-pid --pid 5253 --delay 5000
+monitor-pid --pid 5253 --period 5000
 ```
 
 It will monitor the pid 5253 each 5 secondes and output the statistics on stdout.
@@ -29,7 +29,7 @@ var MonitorPid = require('monitor-pid');
 // creates an instance of MonitorPid
 // - pid to monitor is 5253
 // - monitoring will occure each 5 secondes
-var mapp = new MonitorPid(5253, { delay: 5000 });
+var mapp = new MonitorPid(5253, { period: 5000 });
 
 // begin the monitoring
 mapp.start();
