@@ -10,18 +10,16 @@ before(function (){
 
 describe('MonitorPid nodejs module', function () {
 
-  it('should return an error if started with an unknown pid @1');
-  // it('should return an error if started with an unknown pid @1', function (done) {
-  //   getNonRunningPid(function (err, pidToTest) {
-  //     var mp = new MonitorPid(pidToTest);
-  //     mp.on('error', function (err) {
-  //       console.error(err);
-  //       //expect(err, 'xxx').to.be.numeric;
-  //       done();
-  //     });
-  //     mp.start();
-  //   });
-  // });
+  it('should return an error if started with an unknown pid @1', function (done) {
+    getNonRunningPid(function (err, pidToTest) {
+      var mp = new MonitorPid(pidToTest);
+      mp.on('error', function (err) {
+        expect(err.toString()).to.contain('is not running');
+        done();
+      });
+      mp.start();
+    });
+  });
   it('should stop monitoring when the watched process is finished @2');
   it('should stop monitoring when the "stop" method is called @3');
   it('should return JSON result @4');
