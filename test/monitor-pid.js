@@ -39,7 +39,7 @@ describe('MonitorPid nodejs module', function () {
   });
 
   it('should stop monitoring when the "stop" method is called @3', function (done) {
-    var process = spawn('sleep', ['0.1']);
+    var process = spawn('sleep', ['1']);
     var processCode = undefined;
     process.on('exit', function (code) {
       processCode = code;
@@ -57,7 +57,21 @@ describe('MonitorPid nodejs module', function () {
     }, 100);
   });
 
-  it('should return JSON result @4');
+  it('should return JSON result @4', function (done) {
+    var stats   = [];
+    var process = spawn('sleep', ['0.1']);
+    var mp = new MonitorPid(process.pid, { period: 10 }); // monitor each 10ms
+    mp.on('monitored', function (pid, data) {
+      stats.push(data);
+    });
+    mp.on('end', function (pid) {
+      expect(stats).to.have.length.above(0);
+      expect(stats[0]).to.be.an('object');
+      done();
+    });
+    mp.start();
+  });
+
   it('should return 2 results if period is 1 sec and the watched process die after 2.5 secondes @5');
 
 });
