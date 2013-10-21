@@ -1,3 +1,15 @@
 #!/usr/bin/env node
 
-//require('../lib/monitorpid').cli.start();
+var optimist = require('optimist')
+    .usage('Usage: $0 --pid=[num] --period=[num]')
+    .demand('pid')
+    .demand('period').default('period', 5000)
+    .describe('pid', 'the pid of the process tree to monitor')
+    .describe('period', 'number of seconds to wait before each probing');
+var argv = optimist.argv;
+
+// show usage if --help option is used
+if (argv.help) {
+  optimist.showHelp();
+  process.exit(0);
+}

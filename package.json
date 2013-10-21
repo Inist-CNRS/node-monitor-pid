@@ -32,6 +32,7 @@
     "is-running": "~1.0.3"
   },
   "dependencies": {
-    "is-running": "~1.0.3"
+    "is-running": "~1.0.3",
+    "optimist": "~0.6.0"
   }
 }

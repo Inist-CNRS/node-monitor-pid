@@ -4,6 +4,7 @@
 var expect      = require('chai').expect;
 var MonitorPid  = require('../index.js');
 var spawn       = require('child_process').spawn;
+var exec        = require('child_process').exec;
 
 before(function (){
 
@@ -113,9 +114,17 @@ describe('MonitorPid nodejs module', function () {
 
 describe('MonitorPid unix command', function () {
 
-  it('should not be allowed to be run without parameters @6');
-  it('should return 1 if pid doesn\'t exist @7');
-  it('should return CSV as a result if pid exists @8');
+  it('should not be allowed to be run without parameters @7', function (done) {
+    var cmd = __dirname + '/../bin/monitor-pid';
+    var p = exec(cmd, function (err, stdout, stderr) {
+      expect(p.exitCode).to.be.equal(1);
+      expect(stderr).to.contain('Missing required arguments: pid');
+      done();
+    });
+  });
+
+  it('should return 1 if pid doesn\'t exist @8');
+  it('should return CSV as a result if pid exists @9');
 
 });
 
