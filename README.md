@@ -29,25 +29,25 @@ var MonitorPid = require('monitor-pid');
 // creates an instance of MonitorPid
 // - pid to monitor is 5253
 // - monitoring will occure each 5 secondes
-var mapp = new MonitorPid(5253, { period: 5000 });
+var mp = new MonitorPid(5253, { period: 5000 });
 
 // begin the monitoring
-mapp.start();
+mp.start();
 
 // received each time the pid tree has been monitored
-mapp.on('monitored', function (pid, stats) {
+mp.on('monitored', function (pid, stats) {
   console.error('monitored', pid, stats);
 });
 
 // occurs when the monitoring is finished
 // (no more pid or stop has been called)
-mapp.on('end', function (pid) {
+mp.on('end', function (pid) {
   console.error('end', pid);
 });
 
 // stop the monitoring after 50 secondes
 setTimeout(function () {
-  mapp.stop();
+  mp.stop();
 }, 50000);
 ```
 
