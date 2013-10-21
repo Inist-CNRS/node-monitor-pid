@@ -135,7 +135,12 @@ describe('MonitorPid dependencies', function () {
       done();
     });   
   });
-  it('should have pidtree installed on the system @3.2');
+  it('should have pstree installed on the system @3.2', function (done) {
+    var p = exec('pstree -V', function (err, stdout, stderr) {
+      expect(p.exitCode).to.be.equal(0);
+      done();
+    });
+  });
 });
 
 after(function (){
