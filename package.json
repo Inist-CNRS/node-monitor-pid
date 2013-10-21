@@ -1,0 +1,30 @@
+{
+  "name": "monitor-pid",
+  "version": "0.0.1",
+  "description": "Monitors a pid and all its sons",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kerphi/node-monitor-pid.git"
+  },
+  "keywords": [
+    "monitor",
+    "pid",
+    "pidstat",
+    "pstree",
+    "csv",
+    "statistics"
+  ],
+  "author": "Stéphane Gully <stephane.gully@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kerphi/node-monitor-pid/issues"
+  },
+  "devDependencies": {
+    "chai": "~1.8.1",
+    "mocha": "~1.13.0"
+  }
+}
