@@ -29,7 +29,8 @@
   "devDependencies": {
     "chai": "~1.8.1",
     "mocha": "~1.13.0",
-    "is-running": "~1.0.3"
+    "is-running": "~1.0.3",
+    "csv-string": "~2.1.0"
   },
   "dependencies": {
     "is-running": "~1.0.3",

@@ -133,7 +133,26 @@ describe('MonitorPid unix command', function () {
     });
   });
 
-  it('should return CSV as a result if pid exists @2.3');
+ this.timeout(5000);
+ it('should return CSV as a result if pid exists @2.3', function (done) {
+    var p = spawn('sleep', ['3']);
+    var cmd = __dirname + '/../bin/monitor-pid --pid=' + p.pid + ' --period=100';
+    exec(cmd, function (err, stdout, stderr) {
+      expect(p.exitCode).to.be.equal(0);
+
+      var CSV = require('csv-string');
+      var json = CSV.parse(stdout);
+
+      expect(json).to.have.length.above(1);
+      expect(json[0]).to.include('cpu');
+
+      // check the cpu value is a number
+      var cpuIdx = json[0].indexOf('cpu');
+      expect(json[1][cpuIdx]).to.match(/^[0-9]+/);      
+
+      done();
+    });
+  });
 
 });
 

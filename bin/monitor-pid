@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-var MonitorPid = require('../index.js');
 var optimist = require('optimist')
     .usage('Usage: $0 --pid=[num] --period=[num]')
     .demand('pid')
@@ -15,11 +14,20 @@ if (argv.help) {
   process.exit(0);
 }
 
+var MonitorPid = require('../index.js');
 var mp = new MonitorPid(argv.pid, { period: argv.period });
 
 // received each time the pid tree has been monitored
-mp.on('monitored', function (pid, stats) {
-  console.error('monitored', pid, stats);
+mp.on('monitored', function (pid, data) {
+  delete data.active_pids;
+  Object.keys(data).forEach(function (field, index) {
+    if (field == 'cpu' || field == 'mem_vsz' || field == 'mem_rss') {
+      data[field] = data[field].toFixed(2).toString().replace('.', ',');
+    } else {
+      data[field] = data[field].toString().replace('.', ',');
+    }
+  });
+  writeCSV(data);
 });
 
 // occurs when the monitoring is finished
@@ -34,4 +42,31 @@ mp.on('error', function (err) {
   process.exit(1);
 });
 
+// start the monitoring
 mp.start();
+
+
+/**
+ * JSON2CSV tools
+ */
+var firstLine = true;
+var fields    = [];
+function writeCSV(row) {
+  if (firstLine) {
+    firstLine = false;
+    fields = Object.keys(row);
+    fields.forEach(function (field, idx) {
+      process.stdout.write(field + (idx < fields.length - 1 ? ',' : ''));
+    });
+    process.stdout.write('\n');
+  }
+  fields.forEach(function (field, idx) {
+    if (/,/.test(row[field])) {
+      process.stdout.write('"' + row[field].replace('"', '""') + '"');
+    } else {
+      process.stdout.write(row[field]);
+    }
+    process.stdout.write(idx < fields.length - 1 ? ',' : '');
+  });
+  process.stdout.write('\n');
+}
