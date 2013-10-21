@@ -123,7 +123,16 @@ describe('MonitorPid unix command', function () {
     });
   });
 
-  it('should return 1 if pid doesn\'t exist @8');
+  it('should return 1 if pid doesn\'t exist @8', function (done) {
+    getNonRunningPid(function (err, pidToTest) {
+      var cmd = __dirname + '/../bin/monitor-pid --pid=' + pidToTest;
+      var p = exec(cmd, function (err, stdout, stderr) {
+        expect(p.exitCode).to.be.equal(1);
+        done();
+      });
+    });
+  });
+
   it('should return CSV as a result if pid exists @9');
 
 });

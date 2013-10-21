@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+var MonitorPid = require('../index.js');
 var optimist = require('optimist')
     .usage('Usage: $0 --pid=[num] --period=[num]')
     .demand('pid')
@@ -13,3 +14,24 @@ if (argv.help) {
   optimist.showHelp();
   process.exit(0);
 }
+
+var mp = new MonitorPid(argv.pid, { period: argv.period });
+
+// received each time the pid tree has been monitored
+mp.on('monitored', function (pid, stats) {
+  console.error('monitored', pid, stats);
+});
+
+// occurs when the monitoring is finished
+// (no more pid or stop has been called)
+mp.on('end', function (pid) {
+  process.exit(0);
+});
+
+
+mp.on('error', function (err) {
+  console.error(err);
+  process.exit(1);
+});
+
+mp.start();
