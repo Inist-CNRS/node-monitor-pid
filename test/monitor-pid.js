@@ -105,6 +105,8 @@ describe('MonitorPid nodejs module', function () {
       expect(stats[0].mem_rss).to.not.be.undefined;
       expect(stats[0].disk_read).to.not.be.undefined;
       expect(stats[0].disk_write).to.not.be.undefined;
+      expect(stats[0].date).to.not.be.undefined;
+      expect(stats[0].time).to.not.be.undefined;
       done();
     });
     mp.start();
