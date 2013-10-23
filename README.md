@@ -18,7 +18,7 @@ Usage as a command line
 =======================
 
 ```sh
-npm install -f monitor-pid
+npm install -g monitor-pid
 monitor-pid --pid 5253 --period 5000
 ```
 
@@ -47,6 +47,10 @@ mp.on('monitored', function (pid, stats) {
 // (no more pid or stop has been called)
 mp.on('end', function (pid) {
   console.error('end', pid);
+});
+
+mp.on('error', function (err) {
+  console.error(err);
 });
 
 // stop the monitoring after 50 secondes
