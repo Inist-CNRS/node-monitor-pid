@@ -102,19 +102,22 @@ describe('MonitorPid nodejs module', function () {
       expect(stats[0].parent_pid).to.not.be.undefined;
       expect(stats[0].active_pids).to.not.be.undefined;
       expect(stats[0].nb_pids).to.not.be.undefined;
+
       expect(stats[0]['%usr']).to.not.be.undefined;
       expect(stats[0]['%system']).to.not.be.undefined;
       expect(stats[0]['%guest']).to.not.be.undefined;
       expect(stats[0]['%CPU']).to.not.be.undefined;
-      expect(stats[0]['CPU']).to.not.be.undefined;
+
       expect(stats[0]['minflt/s']).to.not.be.undefined;
       expect(stats[0]['majflt/s']).to.not.be.undefined;
       expect(stats[0]['VSZ']).to.not.be.undefined;
       expect(stats[0]['RSS']).to.not.be.undefined;
       expect(stats[0]['%MEM']).to.not.be.undefined;
+
       expect(stats[0]['kB_rd/s']).to.not.be.undefined;
       expect(stats[0]['kB_wr/s']).to.not.be.undefined;
       expect(stats[0]['kB_ccwr/s']).to.not.be.undefined;
+
       done();
     });
     mp.start();
