@@ -97,16 +97,24 @@ describe('MonitorPid nodejs module', function () {
     });
     mp.on('end', function (pid) {
       expect(stats).to.have.length(1);
+      expect(stats[0].date).to.not.be.undefined;
+      expect(stats[0].time).to.not.be.undefined;
       expect(stats[0].parent_pid).to.not.be.undefined;
       expect(stats[0].active_pids).to.not.be.undefined;
       expect(stats[0].nb_pids).to.not.be.undefined;
-      expect(stats[0].cpu).to.not.be.undefined;
-      expect(stats[0].mem_vsz).to.not.be.undefined;
-      expect(stats[0].mem_rss).to.not.be.undefined;
-      expect(stats[0].disk_read).to.not.be.undefined;
-      expect(stats[0].disk_write).to.not.be.undefined;
-      expect(stats[0].date).to.not.be.undefined;
-      expect(stats[0].time).to.not.be.undefined;
+      expect(stats[0]['%usr']).to.not.be.undefined;
+      expect(stats[0]['%system']).to.not.be.undefined;
+      expect(stats[0]['%guest']).to.not.be.undefined;
+      expect(stats[0]['%CPU']).to.not.be.undefined;
+      expect(stats[0]['CPU']).to.not.be.undefined;
+      expect(stats[0]['minflt/s']).to.not.be.undefined;
+      expect(stats[0]['majflt/s']).to.not.be.undefined;
+      expect(stats[0]['VSZ']).to.not.be.undefined;
+      expect(stats[0]['RSS']).to.not.be.undefined;
+      expect(stats[0]['%MEM']).to.not.be.undefined;
+      expect(stats[0]['kB_rd/s']).to.not.be.undefined;
+      expect(stats[0]['kB_wr/s']).to.not.be.undefined;
+      expect(stats[0]['kB_ccwr/s']).to.not.be.undefined;
       done();
     });
     mp.start();
@@ -146,10 +154,10 @@ describe('MonitorPid unix command', function () {
       var json = CSV.parse(stdout);
 
       expect(json).to.have.length.above(1);
-      expect(json[0]).to.include('cpu');
+      expect(json[0]).to.include('%CPU');
 
       // check the cpu value is a number
-      var cpuIdx = json[0].indexOf('cpu');
+      var cpuIdx = json[0].indexOf('%CPU');
       expect(json[1][cpuIdx]).to.match(/^[0-9]+/);      
 
       done();
