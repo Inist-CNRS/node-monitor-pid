@@ -19,7 +19,11 @@ var mp = new MonitorPid(argv.pid, { period: argv.period });
 
 // received each time the pid tree has been monitored
 mp.on('monitored', function (pid, data) {
+  
+  // remove spam fields...
   delete data.active_pids;
+  delete data.pids;
+
   Object.keys(data).forEach(function (field, index) {
     if (field == 'cpu' || field == 'mem_vsz' || field == 'mem_rss') {
       data[field] = data[field].toFixed(2).toString().replace('.', ',');
