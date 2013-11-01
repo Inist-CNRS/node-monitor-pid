@@ -5,7 +5,7 @@ var optimist = require('optimist')
     .demand('pid')
     .demand('period').default('period', 5000)
     .describe('pid', 'the pid of the process tree to monitor')
-    .describe('period', 'number of seconds to wait before each probing');
+    .describe('period', 'number of milliseconds to wait before each probing');
 var argv = optimist.argv;
 
 // show usage if --help option is used
