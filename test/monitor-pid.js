@@ -172,7 +172,8 @@ describe('MonitorPid unix command', function () {
 describe('MonitorPid dependencies', function () {
   it('should have pidstat installed on the system @3.1', function (done) {
     var p = exec('pidstat -V', function (err, stdout, stderr) {
-      expect(p.exitCode).to.be.equal(0);
+      expect(stdout).contain('sysstat version');
+      //expect(p.exitCode).to.be.equal(0); // do not check exitCode because it returns 1 on Suse OS
       done();
     });   
   });
