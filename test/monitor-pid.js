@@ -123,6 +123,26 @@ describe('MonitorPid nodejs module', function () {
     mp.start();
   });
 
+  this.timeout(7000);
+  it('should work when monitoring several process (parent with sons) @1.7', function (done) {
+    var stats = [];
+    var mp = new MonitorPid(2, { period: 100 }); // monitor each 10ms
+    mp.on('monitored', function (pid, data) {
+      stats.push(data);
+      mp.stop();
+    });
+    mp.on('end', function (pid) {
+      expect(stats).to.have.length.above(0);
+      expect(stats[0]).to.be.an('object');
+      done();
+    });
+    mp.on('error', function (err) {
+      expect(err).to.be.null;
+      done();
+    });
+    mp.start();
+  });
+
 });
 
 describe('MonitorPid unix command', function () {
