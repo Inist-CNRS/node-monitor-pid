@@ -35,9 +35,6 @@ var MonitorPid = require('monitor-pid');
 // - monitoring will occure each 5 secondes
 var mp = new MonitorPid(5253, { period: 5000 });
 
-// begin the monitoring
-mp.start();
-
 // received each time the pid tree has been monitored
 mp.on('monitored', function (pid, stats) {
   console.error('monitored', pid, stats);
@@ -52,6 +49,9 @@ mp.on('end', function (pid) {
 mp.on('error', function (err) {
   console.error(err);
 });
+
+// begin the monitoring
+mp.start();
 
 // stop the monitoring after 50 secondes
 setTimeout(function () {
