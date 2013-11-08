@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 var optimist = require('optimist')
-    .usage('Usage: $0 --pid=[num] --period=[num]')
+    .usage('Usage: $0 --pid=[num] --period=[num] --fake=[true|false]')
     .demand('pid')
     .demand('period').default('period', 5000)
+    .demand('fake').default('fake', false)
     .describe('pid', 'the pid of the process tree to monitor')
-    .describe('period', 'number of milliseconds to wait before each probing');
+    .describe('period', 'number of milliseconds to wait before each probing')
+    .describe('fake', 'used to generate foake data instead of pidstat output');
 var argv = optimist.argv;
 
 // show usage if --help option is used
@@ -15,7 +17,10 @@ if (argv.help) {
 }
 
 var MonitorPid = require('../index.js');
-var mp = new MonitorPid(argv.pid, { period: argv.period });
+var mp = new MonitorPid(argv.pid, {
+  period: argv.period,
+  fakePidStat: (argv.fake && argv.fake == 'true'),
+});
 
 // received each time the pid tree has been monitored
 mp.on('monitored', function (pid, data) {
