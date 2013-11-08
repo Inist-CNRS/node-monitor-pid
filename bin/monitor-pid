@@ -56,8 +56,8 @@ mp.start();
  * JSON2CSV tools
  */
 function writeCSV(row) {
-  if (!this.firstLine) {
-    this.firstLine = false;
+  if (!this.notFirstLine) {
+    this.notFirstLine = true;
     this.fields = Object.keys(row);
     this.fields.forEach(function (field, idx) {
       process.stdout.write(field + (idx < this.fields.length - 1 ? ',' : ''));
