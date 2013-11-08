@@ -25,12 +25,9 @@ mp.on('monitored', function (pid, data) {
   delete data.pids;
 
   Object.keys(data).forEach(function (field, index) {
-    if (field == 'cpu' || field == 'mem_vsz' || field == 'mem_rss') {
-      data[field] = data[field].toFixed(2).toString().replace('.', ',');
-    } else {
-      data[field] = data[field].toString().replace('.', ',');
-    }
+    data[field] = data[field].toString().replace('.', ',');
   });
+
   writeCSV(data);
 });
 
@@ -53,24 +50,23 @@ mp.start();
 /**
  * JSON2CSV tools
  */
-var firstLine = true;
-var fields    = [];
 function writeCSV(row) {
-  if (firstLine) {
-    firstLine = false;
-    fields = Object.keys(row);
-    fields.forEach(function (field, idx) {
-      process.stdout.write(field + (idx < fields.length - 1 ? ',' : ''));
+  if (!this.firstLine) {
+    this.firstLine = false;
+    this.fields = Object.keys(row);
+    this.fields.forEach(function (field, idx) {
+      process.stdout.write(field + (idx < this.fields.length - 1 ? ',' : ''));
     });
     process.stdout.write('\n');
   }
-  fields.forEach(function (field, idx) {
+
+  this.fields.forEach(function (field, idx) {
     if (/,/.test(row[field])) {
       process.stdout.write('"' + row[field].replace('"', '""') + '"');
     } else {
       process.stdout.write(row[field]);
     }
-    process.stdout.write(idx < fields.length - 1 ? ',' : '');
+    process.stdout.write(idx < this.fields.length - 1 ? ',' : '');
   });
   process.stdout.write('\n');
 }
