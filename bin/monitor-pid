@@ -30,7 +30,11 @@ mp.on('monitored', function (pid, data) {
   delete data.pids;
 
   Object.keys(data).forEach(function (field, index) {
-    data[field] = data[field].toString().replace('.', ',');
+    if ([ 'date', 'time', 'parent_pid', 'nb_pids', 'monit_time' ].indexOf(field) !== -1) {
+      data[field] = data[field].toString();
+    } else {
+      data[field] = data[field].toFixed(2).toLocaleString();      
+    }
   });
 
   writeCSV(data);
