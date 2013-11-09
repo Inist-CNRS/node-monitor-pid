@@ -3,6 +3,8 @@ node-monitor-pid
 
 Monitors a pid and all its sons.
 
+Use case example: watch a Web server system activity being stressed by [siege](http://www.joedog.org/siege-home/) (benchmarking). Then use Libreoffice or Excel to analyze the CPU, MEM and DISK usage of the Web server.
+
 [![Build Status](https://travis-ci.org/kerphi/node-monitor-pid.png?branch=master)](https://travis-ci.org/kerphi/node-monitor-pid)
 
 Installation
@@ -23,6 +25,17 @@ monitor-pid --pid 5253 --period 5000
 ```
 
 It will monitor the pid 5253 each 5 secondes and output cpu, memory, disk and nb_pids statistics as a CSV string on stdout.
+
+Output example:
+
+```csv
+date,time,parent_pid,nb_pids,monit_time,%usr,%system,%guest,%CPU,minflt/s,majflt/s,VSZ,RSS,%MEM,kB_rd/s,kB_wr/s,kB_ccwr/s
+2013/11/09 13:05:52,0,1,167,1062,7.84,0.98,0.00,8.82,20.58,0.00,47132328.00,2683424.00,33.22,-105.00,44.02,-97.16
+2013/11/09 13:05:57,5,1,167,1053,12.74,5.88,0.00,18.62,2561.77,0.00,47132140.00,2687784.00,33.28,-105.00,79.31,-101.08
+2013/11/09 13:06:02,10,1,167,1052,29.70,10.89,0.00,40.59,4618.81,0.00,47141112.00,2688768.00,33.30,-105.00,-97.08,-97.08
+2013/11/09 13:06:07,15,1,167,1046,11.88,4.95,0.00,16.83,2051.49,0.00,47199016.00,2682536.00,33.22,-105.00,-61.44,-101.04
+2013/11/09 13:06:12,20,1,167,1045,5.94,0.99,0.00,6.93,19.80,0.00,47203476.00,2679040.00,33.17,-105.00,-105.00,-105.00
+```
 
 Usage as a nodejs module
 ========================
