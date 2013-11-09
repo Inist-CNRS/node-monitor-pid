@@ -14,7 +14,7 @@ Installation
 npm install monitor-pid
 ```
 
-It also requires ``pidstat`` and ``pstree`` linux command to be installed on the system. 
+It also requires ``pidstat`` (>= 10.x) and ``pstree`` linux command to be installed on the system (`apt-get install sysstat psmisc`)
 
 Usage as a command line
 =======================
